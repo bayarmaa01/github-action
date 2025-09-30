@@ -1,0 +1,26 @@
+name: Second Workflow Demo
+on: [push]
+
+jobs:
+    run-shell-command:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Run a String
+              run: echo This is the second workflow!
+            - name: Run a multi-line script
+              run: |
+                node -v
+                npm -v
+    prallel-job-macos:
+        runs-on: macos-latest
+        steps:
+            - name: Check macOS version
+              run: sw_vers
+    dependent-job:
+        runs-on: windows-latest
+        needs: [run-shell-command, prallel-job-macos]       
+        steps:
+            - name: Echo a string
+              run: write-Output "This job runs after the other two jobs complete."
+
+              
