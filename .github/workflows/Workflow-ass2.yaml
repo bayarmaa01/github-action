@@ -12,6 +12,7 @@ jobs:
       - name: Step that fails
         id: failstep
         run: exit 1
+        continue-on-error: true
       - name: Only if previous failed
         if: failure()
         run: echo "Previous step failed"
