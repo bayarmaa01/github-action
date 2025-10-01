@@ -15,12 +15,12 @@ jobs:
   parallel-job-macos:
     runs-on: macos-latest
     steps:
-      - name: Check macOS version
+      - name: view SW version
         run: sw_vers
 
   dependent-job:
     runs-on: windows-latest
-    needs: [run-shell-command, parallel-job-macos]
+    needs: [run-shell-command]
     steps:
       - name: Echo a string
         run: Write-Output "This job runs after the other two jobs complete."
