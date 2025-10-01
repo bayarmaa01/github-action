@@ -1,0 +1,12 @@
+name: Check actions repository
+on: [push]
+
+jobs:
+    check-actions-repo:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout actions repository
+              uses: actions/checkout@v5
+            - name: List files after checkout
+              run: ls -la
+              
