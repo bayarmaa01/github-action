@@ -1,44 +1,60 @@
-name: Simple Multi-OS Info
+name: Multi-OS System Info
+
 on: [push]
 
 jobs:
-  ubuntu:
+  ubuntu-info:
     runs-on: ubuntu-latest
     steps:
-      - run: uname -a
-      - run: |
-          echo "SHA=${GITHUB_SHA}" > info.txt
-          echo "REPO=${GITHUB_REPOSITORY}" >> info.txt
-          echo "WORKSPACE=${GITHUB_WORKSPACE}" >> info.txt
-      - uses: actions/upload-artifact@v4
+      - name: Print system info
+        run: |
+          uname -a
+          lsb_release -a || true
+      - name: Capture metadata
+        run: |
+          echo "COMMIT_SHA=${GITHUB_SHA}" > meta.txt
+          echo "REPO_NAME=${GITHUB_REPOSITORY}" >> meta.txt
+          echo "WORKSPACE=${GITHUB_WORKSPACE}" >> meta.txt
+      - name: Upload metadata artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: ubuntu-info
-          path: info.txt
+          name: ubuntu-meta
+          path: meta.txt
 
-  macos:
+  macos-info:
     runs-on: macos-latest
     steps:
-      - run: uname -a
-      - run: |
-          echo "SHA=${GITHUB_SHA}" > info.txt
-          echo "REPO=${GITHUB_REPOSITORY}" >> info.txt
-          echo "WORKSPACE=${GITHUB_WORKSPACE}" >> info.txt
-      - uses: actions/upload-artifact@v4
+      - name: Print system info
+        run: |
+          uname -a
+          sw_vers
+      - name: Capture metadata
+        run: |
+          echo "COMMIT_SHA=${GITHUB_SHA}" > meta.txt
+          echo "REPO_NAME=${GITHUB_REPOSITORY}" >> meta.txt
+          echo "WORKSPACE=${GITHUB_WORKSPACE}" >> meta.txt
+      - name: Upload metadata artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: macos-info
-          path: info.txt
+          name: macos-meta
+          path: meta.txt
 
-  windows:
-    needs: [ubuntu]
-    if: always()
+  windows-info:
     runs-on: windows-latest
+    if: always()
+    needs: [ubuntu-info]
     steps:
-      - run: systeminfo
-      - run: |
-          echo SHA=%GITHUB_SHA% > info.txt
-          echo REPO=%GITHUB_REPOSITORY% >> info.txt
-          echo WORKSPACE=%GITHUB_WORKSPACE% >> info.txt
-      - uses: actions/upload-artifact@v4
+      - name: Print system info
+        run: |
+          systeminfo
+          echo %OS%
+      - name: Capture metadata
+        run: |
+          echo COMMIT_SHA=%GITHUB_SHA%> meta.txt
+          echo REPO_NAME=%GITHUB_REPOSITORY%>> meta.txt
+          echo WORKSPACE=%GITHUB_WORKSPACE%>> meta.txt
+      - name: Upload metadata artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: windows-info
-          path: info.txt
+          name: windows-meta
+          path: meta.txt
