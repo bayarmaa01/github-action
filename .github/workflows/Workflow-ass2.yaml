@@ -11,7 +11,7 @@ jobs:
         run: echo "This runs only on main branch"
       - name: Step that fails
         id: failstep
-        run: exit 1 || true
+        run: exit 1
       - name: Only if previous failed
         if: failure()
         run: echo "Previous step failed"
