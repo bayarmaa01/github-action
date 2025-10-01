@@ -1,0 +1,35 @@
+name: Compare Checkout Methods
+
+on: [push]
+
+jobs:
+  compare-checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Manual Git clone
+        run: |
+          git clone ${{ github.server_url }}/${{ github.repository }} manual-clone
+          ls -R manual-clone > manual_files.txt
+
+      - name: List files before actions/checkout
+        run: |
+          ls -R > before_checkout.txt
+
+      - name: Checkout with actions/checkout
+        uses: actions/checkout@v4
+
+      - name: List files after actions/checkout
+        run: |
+          ls -R > after_checkout.txt
+
+      - name: Compare file listings
+        run: |
+          diff before_checkout.txt after_checkout.txt > diff_before_after.txt || true
+          diff manual_files.txt after_checkout.txt > diff_manual_vs_action.txt || true
+          cat diff_before_after.txt diff_manual_vs_action.txt > checkout_diff.log
+
+      - name: Upload log artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkout-diff-log
+          path: checkout_diff.log
