@@ -1,0 +1,41 @@
+name: Workflow Demo 3
+on: [push]  
+
+defaults:
+  run:
+    working-directory: /scripts
+    shell: bash
+
+jobs:
+    display-wd-info:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Display Working Directory and List Files
+              run: |
+                pwd
+                ls -la
+                echo $GITHUB_SHA
+                echo $GITHUB_REF    
+                echo $GITHUB_REPOSITORY
+                echo $GITHUB_WORKSPACE
+            - name: Change working directory
+              working-directory: /home/runner
+              run: pwd
+    display-wd-info-windows:
+        runs-on: windows-latest 
+        defaults:
+          run: 
+            shell: push
+        steps:
+            - name: Display Working Directory and List Files
+              run: |
+                Get-location
+                dir
+                echo $env:GITHUB_SHA
+                echo $env:GITHUB_REF    
+                echo $env:GITHUB_REPOSITORY
+                echo $env:GITHUB_WORKSPACE
+            - name: Python Shell
+              run: |
+                python -c "import platform; print(platform.system()); print(platform.release()); print(platform.version())"
+                    
