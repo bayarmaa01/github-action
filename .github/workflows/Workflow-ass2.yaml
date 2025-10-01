@@ -1,0 +1,20 @@
+name: Conditional Steps
+
+on: [push]
+
+jobs:
+  conditional:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Only on main
+        if: github.ref == 'refs/heads/main'
+        run: echo "This runs only on main branch"
+      - name: Step that fails
+        id: failstep
+        run: exit 1 || true
+      - name: Only if previous failed
+        if: failure()
+        run: echo "Previous step failed"
+      - name: Always runs
+        if: always()
+        run: echo "This always runs"
