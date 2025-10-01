@@ -3,7 +3,7 @@ on: [push]
 
 defaults:
   run:
-    working-directory: /scripts
+    working-directory: ./scripts
     shell: bash
 
 jobs:
