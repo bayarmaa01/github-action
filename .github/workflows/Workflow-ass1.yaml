@@ -1,0 +1,44 @@
+name: Simple Multi-OS Info
+on: [push]
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - run: uname -a
+      - run: |
+          echo "SHA=${GITHUB_SHA}" > info.txt
+          echo "REPO=${GITHUB_REPOSITORY}" >> info.txt
+          echo "WORKSPACE=${GITHUB_WORKSPACE}" >> info.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-info
+          path: info.txt
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - run: uname -a
+      - run: |
+          echo "SHA=${GITHUB_SHA}" > info.txt
+          echo "REPO=${GITHUB_REPOSITORY}" >> info.txt
+          echo "WORKSPACE=${GITHUB_WORKSPACE}" >> info.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-info
+          path: info.txt
+
+  windows:
+    needs: [ubuntu]
+    if: always()
+    runs-on: windows-latest
+    steps:
+      - run: systeminfo
+      - run: |
+          echo SHA=%GITHUB_SHA% > info.txt
+          echo REPO=%GITHUB_REPOSITORY% >> info.txt
+          echo WORKSPACE=%GITHUB_WORKSPACE% >> info.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-info
+          path: info.txt
