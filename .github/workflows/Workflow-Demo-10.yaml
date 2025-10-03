@@ -1,0 +1,31 @@
+name: Repository events
+on:
+    pull_request:
+        types: [opened, reopened, closed, synchronize]
+    issues:     
+        types: [opened, closed, edited]
+        
+    push:
+        branches:
+            - main
+            - feature/* # matches feature/featA, feature/featB, does not match feature/featA/featB
+            - feature/** # matches feature/featA, feature/featA/featB
+            - "!feature/featA" # matches all branches except feature/featA
+
+        tags:
+            - "v1.*" # matches v1.0, v1.1, does not match v2.0
+            - "!v1.5" # matches all tags except v1.5
+        paths:
+            - "app/**" # matches any file in the app directory or its subdirectories
+            - "config/*.yml" # matches any .yml file in the config directory
+            - "!docs/**" # excludes any file in the docs directory or its subdirectories
+    
+jobs:
+    checkout-test:
+        runs-on: ubuntu-latest
+        steps:
+            - run: |
+                echo $GITHUB_SHA
+                echo $GITHUB_REF
+            - uses: actions/checkout@v5
+            - run: ls -la
