@@ -1,16 +1,15 @@
 name: Stale Issues and PRs
 on:
   schedule:
-    #- cron: "0 14 * * *" # every day at 14:00 UTC
+    # - cron: "0 14 * * *" # every day at 14:00 UTC
     - cron: "*/5 * * * *" # just for testing, every 5 minutes
 jobs:
-    stale:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/stale@v8 # use latest stable version
-              with:
-                repo-token: "${{ secrets.GITHUB_TOKEN }}" # GitHub token to authenticate
-                stale-issue-message: "This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions."
-                days-before-stale: 1 # for testing, set to 1 day
-                days-before-close: 5 # for testing, set to 5 days
-                
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v8 # use latest stable version
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}" # GitHub token to authenticate
+          stale-issue-message: "This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions."
+          days-before-stale: 1 # for testing, set to 1 day
+          days-before-close: 5 # for testing, set to 5 days
