@@ -13,7 +13,7 @@ jobs:
             const msg = "Hello from Github Actions!"
             core.setOutput("greeting",msg)
             return msg
-      - name: Apped output to file
+      - name: Append output to file
         run: |
           echo "Greeting from action: ${{ steps.script.outputs.greeting }}" >> summary.txt
 
