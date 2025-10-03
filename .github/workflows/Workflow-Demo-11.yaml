@@ -11,5 +11,6 @@ jobs:
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}" # GitHub token to authenticate
           stale-issue-message: "This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions."
+          stale-pr-message: "This pull request has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions."
           days-before-stale: 1 # for testing, set to 1 day
           days-before-close: 5 # for testing, set to 5 days
