@@ -1,0 +1,45 @@
+name: Artifact Append Workflow
+
+on: [push]
+
+jobs:
+  generate-file:
+    runs-on: ubuntu-latest
+    outputs:
+      artifact-name: ${{ steps.set-artifact-name.outputs.name }}
+    steps:
+      - name: Create text file
+        run: echo "Initial content from generate-file job." > myfile.txt
+
+      - name: Set artifact name output
+        id: set-artifact-name
+        run: echo "name=myfile" >> $GITHUB_OUTPUT
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: myfile
+          path: myfile.txt
+
+  append-info:
+    runs-on: ubuntu-latest
+    needs: generate-file
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: myfile
+
+      - name: Read and append info
+        run: |
+          echo "----- File before append -----"
+          cat myfile.txt
+          echo "Appended content from append-info job." >> myfile.txt
+          echo "----- File after append -----"
+          cat myfile.txt
+
+      - name: Re-upload updated artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: myfile-updated
+          path: myfile.txt
