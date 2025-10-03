@@ -1,0 +1,24 @@
+name: Marketplace Action Outputs
+on: [push]
+
+jobs:
+  use-marketplace-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use actions/github-script to generate output
+        id: generate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const msg = "Hello from Github Actions!"
+            core.setOutput("greeting",msg)
+            return msg
+      - name: Apped output to file
+        run: |
+          echo "Greeting from action: ${{ steps.generate.outputs.greeting }}" >> summary.txt
+
+      - name: Upload summary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: summary
+          path: summary.txt
