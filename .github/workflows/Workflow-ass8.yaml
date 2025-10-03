@@ -1,4 +1,4 @@
-name: Triggered Verification
+name: Dependent Verification
 
 on:
   workflow_run:
