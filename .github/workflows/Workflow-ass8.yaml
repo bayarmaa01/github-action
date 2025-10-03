@@ -1,0 +1,21 @@
+name: Triggered Verification
+
+on:
+  workflow_run:
+    workflows: ["Artifact Append Workflow"]
+    types:
+      - completed
+
+jobs:
+  verify:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run verification script
+        run: |
+          echo "Running verification script..."
+          # Replace the next line with your actual verification command
+          ./verify.sh || echo "No verify.sh script found."
