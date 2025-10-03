@@ -15,7 +15,7 @@ jobs:
             return msg
       - name: Apped output to file
         run: |
-          echo "Greeting from action: ${{ steps.generate.outputs.greeting }}" >> summary.txt
+          echo "Greeting from action: ${{ steps.script.outputs.greeting }}" >> summary.txt
 
       - name: Upload summary artifact
         uses: actions/upload-artifact@v4
