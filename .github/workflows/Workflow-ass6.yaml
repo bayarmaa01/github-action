@@ -1,0 +1,78 @@
+name: Multi-Event Context
+on:
+  push:
+  pull_request:
+  issues:
+
+jobs:
+  on_push:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo push context
+        run: |
+          echo "Event: ${{ github.event_name }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "Repo: ${{ github.repository }}"
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Write push details
+        run: |
+          echo "Event: ${{ github.event_name }}" >> push.txt
+          echo "Ref: ${{ github.ref }}" >> push.txt
+          echo "Commit SHA: ${{ github.sha }}" >> push.txt
+          echo "Repo: ${{ github.repository }}" >> push.txt
+      - name: Upload push file
+        uses: actions/upload-artifact@v4
+        with:
+          name: push-details
+          path: push.txt
+  on_pull_request:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+        - name: Echo pull request context
+          run: |
+            echo "Evenet: ${{ github.event_name }}"
+            echo "PR Number: ${{ github.event.number }}"
+            echo "Head: ${{ github.head_ref }}"
+            echo "Base: ${{ github.base_ref }}"
+            echo "Repo: ${{ github.repository }}"
+        - name: Checkout code
+          uses: actions/checkout@v4
+        - name: Write pull request details
+          run: |
+            echo "Event: ${{ github.event_name }}" >> pr.txt
+            echo "PR Number: ${{ github.event.number }}" >> pr.txt
+            echo "Head: ${{ github.head_ref }}" >> pr.txt
+            echo "Base: ${{ github.base_ref }}" >> pr.txt
+            echo "Repo: ${{ github.repository }}" >> pr.txt
+        - name: Upload pull request file
+          uses: actions/upload-artifact@v4
+          with:
+            name: pr-details
+            path: pr.txt
+  on_issues:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    steps:
+        - name: Echo issues context
+          run: |
+            echo "Event: ${{ github.event_name }}"
+            echo "Issue Number: ${{ github.event.issue.number }}"
+            echo "Title: ${{ github.event.issue.title }}"
+            echo "Repo: ${{ github.repository }}"
+        - name: Checkout code
+          uses: actions/checkout@v4
+        - name: Write issues details
+          run: |
+            echo "Event: ${{ github.event_name }}" >> issues.txt
+            echo "Issue Number: ${{ github.event.issue.number }}" >> issues.txt
+            echo "Title: ${{ github.event.issue.title }}" >> issues.txt
+            echo "Repo: ${{ github.repository }}" >> issues.txt
+        - name: Upload issues file
+          uses: actions/upload-artifact@v4
+          with:
+            name: issues-details
+            path: issues.txt
