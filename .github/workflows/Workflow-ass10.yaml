@@ -1,0 +1,33 @@
+name: Cache Dependencies Example
+
+on: [push]
+
+jobs:
+  cache-example:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache node_modules
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Check cache result
+        run: |
+          if [ "${{ steps.cache.outputs.cache-hit }}" = "true" ]; then
+            echo "✅ Cache was restored!"
+          else
+            echo "❌ Cache was not restored, fresh install."
+          fi
+
+      - name: List node_modules (verify cache)
+        run: ls -l node_modules
