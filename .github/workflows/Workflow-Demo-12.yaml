@@ -1,7 +1,7 @@
 name: Expressions & Contexts
 on:
     issues:
-        types: [open]
+        types: [opened]
 
 jobs:
     runs-on-issues-and-prs:
