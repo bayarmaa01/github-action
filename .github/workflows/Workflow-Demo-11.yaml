@@ -1,7 +1,6 @@
 name: Stale Issues and PRs
 on:
   schedule:
-    # - cron: "0 14 * * *" # every day at 14:00 UTC
     - cron: "*/5 * * * *" # just for testing, every 5 minutes
 permissions:
   issues: write
