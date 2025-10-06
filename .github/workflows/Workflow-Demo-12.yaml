@@ -1,30 +1,36 @@
-name: Expressions and Contexts
-on: 
-  issues:
-    types: [labeled]
+name: Expressions & Contexts
+on:
+    issues:
+        types: [labeled]
 
 jobs:
-  expressions-and-contexts:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run only if issue has a bug label
-        if: contains(github.event.issue.labels.*.name, 'bug')
-        run: echo ${{ join(github.event.issue.labels.*.name, ', ') }}
-      - name: Expressions
-        run: |
-          echo ${{ 1 }}
-          echo ${{ 'This is a string' }}
-          echo ${{ true }}
-          echo ${{ false }}
-          echo ${{ null }}
-          echo ${{ 1 > 2 }}
-          echo ${{ 'string' == 'String' }}
-          echo ${{ 1 && 0 }}
-          echo ${{ true || (false && true) }}
-      - name: Dump Contexts
-        run: |
-          echo '${{ toJson(github) }}'
-          echo '${{ toJson(job) }}'
-          echo '${{ toJson(steps) }}'
-          echo '${{ toJson(runner) }}'
-          echo '${{ toJson(secrets) }}'
+    runs-on-issues-and-prs:
+        runs-on: ubuntu-latest
+        if: github.event_name == 'issues' || github.event_name == 'pull_request'
+        steps:
+            - name: Run only if issue has a bug label
+              if: contains(github.event.issue.labels.*.name, 'bug')
+              run: echo ${{ join(github.event.issue.labels.*.name, ', ') }}
+    using-expressions-and-events:
+        runs-on: ubuntu-latest
+        if: github.event_name == 'push'
+        steps:
+            - name: Expressions
+              id: expressions
+              run: |
+                echo ${{ 1 }}
+                echo ${{ 'This is a string' }}
+                echo ${{ true }}
+                echo ${{ false }}
+                echo ${{ null }}
+                echo ${{ 1 > 2 }}
+                echo ${{ 'string' == 'String' }}
+                echo ${{ 1 && 0 }}
+                echo ${{ true || (false && true) }}
+            - name: Dump Contexts
+              run: |
+                echo '${{ toJson(github) }}'
+                echo '${{ toJson(job) }}'
+                echo '${{ toJson(steps) }}'
+                echo '${{ toJson(runner) }}'
+                echo '${{ toJson(secrets) }}' 
