@@ -6,13 +6,18 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'issues' || github.event_name == 'pull_request'
     steps:
-      - name: Run only if issue has a bug label
-        if: contains(github.event.issue.labels.*.name, 'bug')
-        run: echo ${{ join(github.event.issue.labels.*.name, ', ')}}
+      - name: Run only if issue or PR has a bug label
+        if: (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'bug')) || 
+            (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'bug'))
+        run: |
+          if [[ "${{ github.event_name }}" == "issues" ]]; then
+            echo "Issue labels: ${{ join(github.event.issue.labels.*.name, ', ') }}"
+          else
+            echo "PR labels: ${{ join(github.event.pull_request.labels.*.name, ', ') }}"
+          fi
+
   using-expressions-and-events:
     runs-on: ubuntu-latest
-    # Remove the next line if you want to run on all events
-    if: github.event_name == 'issues'
     steps:
       - name: Expressions
         run: |
