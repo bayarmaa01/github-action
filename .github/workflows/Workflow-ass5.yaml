@@ -11,11 +11,12 @@ jobs:
         with:
           script: |
             const msg = "Hello from Github Actions!"
-            core.setOutput("greeting",msg)
-            return msg
+            core.setOutput('greeting', msg)
+            // Also export as environment variable for compatibility
+            console.log(`greeting=${msg}`)
       - name: Append output to file
         run: |
-          echo "Greeting from action: ${{ steps.script.outputs.greeting }}" >> summary.txt
+          echo "Greeting from action: ${{ steps.generate.outputs.greeting }}" >> summary.txt
 
       - name: Upload summary artifact
         uses: actions/upload-artifact@v4

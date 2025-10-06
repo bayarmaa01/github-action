@@ -1,0 +1,30 @@
+name: Reusable Env Details
+
+on:
+  workflow_call:
+    inputs:
+      message:
+        description: 'Message to echo'
+        required: true
+        type: string
+    outputs:
+      echoed-message:
+        description: "The echoed message"
+        value: ${{ jobs.env-details.outputs.echoed-message }}
+
+jobs:
+  env-details:
+    runs-on: ubuntu-latest
+    outputs:
+      echoed-message: ${{ steps.echo-input.outputs.echoed }}
+    steps:
+      - name: Print environment details
+        run: |
+          echo "OS: $(uname -a)"
+          echo "Runner: $RUNNER_OS"
+          echo "Workspace: $GITHUB_WORKSPACE"
+      - name: Echo input message
+        id: echo-input
+        run: |
+          echo "${{ inputs.message }}"
+          echo "echoed=${{ inputs.message }}" >> $GITHUB_OUTPUT
