@@ -2,6 +2,13 @@ name: Expressions and Contexts
 on: [push, pull_request, issues]
 
 jobs:
+  runs-on-issues-and-prs:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' || github.event_name == 'pull_request'
+    steps:
+      - name: Run only if issue has a bug label
+        if: contains(github.event.issue.labels.*.name, 'bug')
+        run: echo ${{ join(github.event.issue.labels.*.name, ', ')}}
   using-expressions-and-events:
     runs-on: ubuntu-latest
     # Remove the next line if you want to run on all events
