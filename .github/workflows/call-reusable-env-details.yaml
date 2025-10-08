@@ -1,0 +1,31 @@
+name: Call Reusable Env Details
+
+on: [push]
+
+jobs:
+  call-first:
+    uses: ./.github/workflows/reusable-env-details.yaml
+    with:
+      message: "Hello from first call"
+    secrets: inherit
+
+  call-second:
+    uses: ./.github/workflows/reusable-env-details.yaml
+    with:
+      message: "Greetings from second call"
+    secrets: inherit
+
+  consolidate:
+    runs-on: ubuntu-latest
+    needs: [call-first, call-second]
+    steps:
+      - name: Collect outputs and write log
+        run: |
+          echo "First call output: ${{ needs.call-first.outputs.echoed-message }}" > consolidated-log.txt
+          echo "Second call output: ${{ needs.call-second.outputs.echoed-message }}" >> consolidated-log.txt
+
+      - name: Upload consolidated log
+        uses: actions/upload-artifact@v4
+        with:
+          name: consolidated-log
+          path: consolidated-log.txt
