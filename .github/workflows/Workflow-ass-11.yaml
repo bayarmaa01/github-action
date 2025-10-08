@@ -1,0 +1,21 @@
+name: Dependent Verification
+
+on:
+  workflow_run:
+    workflows: ["Parent Workflow"] # Must match the name field of the parent workflow
+    types:
+      - completed
+
+jobs:
+  verify:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run verification script
+        run: |
+          echo "Running verification script..."
+          # Replace with your actual verification command
+          ./verify.sh || echo "No verify.sh script found."
