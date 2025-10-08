@@ -1,6 +1,7 @@
 name: Daily Repo Log
 
 on:
+  push:
   schedule:
     - cron: "0 2 * * *" # Runs every day at 02:00 UTC
 
