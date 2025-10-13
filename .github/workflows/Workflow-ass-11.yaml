@@ -2,7 +2,7 @@ name: Dependent Verification
 
 on:
   workflow_run:
-    workflows: ["Parent Workflow"] # Must match the name field of the parent workflow
+    workflows: ["Parent Workflow"] 
     types:
       - completed
 

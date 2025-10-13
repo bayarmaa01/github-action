@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Remove Node.js cache and install steps if your repo is not a Node.js project
+      
 
       - name: List files
         run: ls -alR > file-list.txt

@@ -16,7 +16,7 @@ jobs:
           echo "REPO_NAME=${GITHUB_REPOSITORY}" >> meta.txt
           echo "WORKSPACE=${GITHUB_WORKSPACE}" >> meta.txt
       - name: Upload metadata artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: ubuntu-meta
           path: meta.txt
@@ -34,7 +34,7 @@ jobs:
           echo "REPO_NAME=${GITHUB_REPOSITORY}" >> meta.txt
           echo "WORKSPACE=${GITHUB_WORKSPACE}" >> meta.txt
       - name: Upload metadata artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: macos-meta
           path: meta.txt
@@ -54,7 +54,7 @@ jobs:
           echo REPO_NAME=%GITHUB_REPOSITORY%>> meta.txt
           echo WORKSPACE=%GITHUB_WORKSPACE%>> meta.txt
       - name: Upload metadata artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: windows-meta
           path: meta.txt
