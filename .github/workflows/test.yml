@@ -1,0 +1,15 @@
+name: Test Custom Action
+
+on: [push]
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run my custom action
+        uses: ./.github/actions/hello-world
+        with:
+          name: Bayarmaa
